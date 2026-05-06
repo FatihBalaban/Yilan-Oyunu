@@ -1,15 +1,14 @@
 import { GameEntity } from './GameEntity.js';
 
-// KURAL: Kalıtım / Inheritance 
-// KURAL: En az 3 sınıf yapısı (3. Sınıf)
+
 export class Snake extends GameEntity {
-    // KURAL: Encapsulation (Kapsülleme) - Dışarıdan doğrudan erişilemeyen private değişkenler
+    
     #segments = [];
     #dx;
     #dy;
 
     constructor(startX, startY, gridSize) {
-        super(startX, startY, "#4C7BEC"); // Yılanın ana rengi
+        super(startX, startY, "#4C7BEC"); 
         this.gridSize = gridSize;
         this.reset(startX, startY);
     }
@@ -20,17 +19,17 @@ export class Snake extends GameEntity {
             { x: x - this.gridSize, y: y },
             { x: x - (this.gridSize * 2), y: y }
         ];
-        this.#dx = this.gridSize; // Başlangıç yönü sağa
+        this.#dx = this.gridSize; 
         this.#dy = 0;
     }
 
-    // Encapsulation - Verileri okumak için Getter metotları
+    
     getSegments() { return this.#segments; }
     getHead() { return this.#segments[0]; }
     getDx() { return this.#dx; }
     getDy() { return this.#dy; }
 
-    // Encapsulation - Yön değiştirmek için kontrollü Setter metodu
+   
     setDirection(newDx, newDy) {
         this.#dx = newDx;
         this.#dy = newDy;
@@ -53,11 +52,11 @@ export class Snake extends GameEntity {
         return false;
     }
 
-    // KURAL: Polymorphism (Tek parça çizim için üst sınıfın draw metodunu eziyoruz)
+   
     draw(ctx, gridSize) {
         if (this.#segments.length === 0) return;
 
-        // Bütünleşik gövde çizimi
+        
         ctx.beginPath();
         ctx.moveTo(this.#segments[0].x + gridSize / 2, this.#segments[0].y + gridSize / 2);
         
@@ -75,7 +74,7 @@ export class Snake extends GameEntity {
         this.#drawHeadFeatures(ctx, gridSize);
     }
 
-    // Yılanın göz ve ağzını çizen private (gizli) yardımcı metot
+
     #drawHeadFeatures(ctx, gridSize) {
         const head = this.getHead();
         const centerX = head.x + gridSize / 2;
@@ -88,7 +87,6 @@ export class Snake extends GameEntity {
         else if (this.#dy === -gridSize) { e1x = centerX - eyeOffset; e1y = centerY - eyeOffset; e2x = centerX + eyeOffset; e2y = centerY - eyeOffset; } 
         else if (this.#dy === gridSize) { e1x = centerX - eyeOffset; e1y = centerY + eyeOffset; e2x = centerX + eyeOffset; e2y = centerY + eyeOffset; }
 
-        // Göz akı ve gözbebeği
         ctx.fillStyle = "white";
         ctx.beginPath(); ctx.arc(e1x, e1y, 3, 0, 2 * Math.PI); ctx.arc(e2x, e2y, 3, 0, 2 * Math.PI); ctx.fill(); ctx.closePath();
         ctx.fillStyle = "black";
